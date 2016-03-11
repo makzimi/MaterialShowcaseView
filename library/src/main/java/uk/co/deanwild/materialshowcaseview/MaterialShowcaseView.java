@@ -73,6 +73,12 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
     List<IShowcaseListener> mListeners; // external listeners who want to observe when we show and dismiss
     private UpdateOnGlobalLayout mLayoutListener;
     private IDetachedListener mDetachedListener;
+    
+    public static final int CONSUME_TYPE_NO = 0;
+    public static final int CONSUME_TYPE_DOWN = 1;
+    public static final int CONSUME_TYPE_UP = 2;
+    public static final int CONSUME_TYPE_DOWNUP = 3;
+    private int mConsumeOnTouch = CONSUME_TYPE_NO;
 
     public MaterialShowcaseView(Context context) {
         super(context);
@@ -200,9 +206,35 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
         if (mDismissOnTouch) {
             hide();
         }
-        return true;
+        
+        boolean consumeOnTouch = true;
+        if(mConsumeOnTouch != CONSUME_TYPE_NO) {
+            if(mConsumeOnTouch == CONSUME_TYPE_DOWN) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN && inShape(event)) {
+                    hide();
+                    consumeOnTouch = false;
+                }
+            } else if(mConsumeOnTouch == CONSUME_TYPE_UP) {
+                if(event.getAction() == MotionEvent.ACTION_UP && inShape(event)) {
+                    hide();
+                    consumeOnTouch = false;
+                }
+            } else if(mConsumeOnTouch == CONSUME_TYPE_DOWNUP) {
+                if(inShape(event)) {
+                    hide();
+                    consumeOnTouch = false;
+                }
+            }
+        }
+        return consumeOnTouch;
     }
-
+    
+    private boolean inShape(MotionEvent event){
+        return event.getX() > (mXPosition - mShape.getWidth() / 2) &&
+                event.getX() < (mXPosition + mShape.getWidth() / 2) &&
+                event.getY() > (mYPosition - mShape.getHeight() / 2) &&
+                event.getY() < (mYPosition + mShape.getHeight() / 2);
+    }
 
     private void notifyOnDisplayed() {
         for (IShowcaseListener listener : mListeners) {
@@ -228,6 +260,12 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
         }
     }
 
+    private void notifyOnButtonClick() {
+        for (IShowcaseListener listener : mListeners) {
+            listener.onShowcaseButtonClick(this);
+        }
+    }
+
     /**
      * Dismiss button clicked
      *
@@ -236,6 +274,7 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
     @Override
     public void onClick(View v) {
         hide();
+        notifyOnButtonClick();
     }
 
     /**
@@ -371,6 +410,10 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
     private void setDismissOnTouch(boolean dismissOnTouch) {
         mDismissOnTouch = dismissOnTouch;
+    }
+    
+    private void setConsumeOnTouch(int consumeOnTouch) {
+        mConsumeOnTouch = consumeOnTouch;
     }
 
     private void setShouldRender(boolean shouldRender) {
@@ -509,6 +552,11 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
         public Builder setDismissOnTouch(boolean dismissOnTouch) {
             showcaseView.setDismissOnTouch(dismissOnTouch);
+            return this;
+        }
+        
+        public Builder setConsumeOnTouch(int consumeOnTouch) {
+            showcaseView.setConsumeOnTouch(consumeOnTouch);
             return this;
         }
 
