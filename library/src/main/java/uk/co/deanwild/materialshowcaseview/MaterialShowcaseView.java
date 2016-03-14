@@ -213,16 +213,21 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
                 if(event.getAction() == MotionEvent.ACTION_DOWN && inShape(event)) {
                     hide();
                     consumeOnTouch = false;
+                    notifyOnTapIntoShape();
                 }
             } else if(mConsumeOnTouch == CONSUME_TYPE_UP) {
                 if(event.getAction() == MotionEvent.ACTION_UP && inShape(event)) {
                     hide();
                     consumeOnTouch = false;
+                    notifyOnTapIntoShape();
                 }
             } else if(mConsumeOnTouch == CONSUME_TYPE_DOWNUP) {
                 if(inShape(event)) {
-                    hide();
                     consumeOnTouch = false;
+                    if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                        notifyOnTapIntoShape();
+                        hide();
+                    }
                 }
             }
         }
@@ -263,6 +268,12 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
     private void notifyOnButtonClick() {
         for (IShowcaseListener listener : mListeners) {
             listener.onShowcaseButtonClick(this);
+        }
+    }
+    
+    private void notifyOnTapIntoShape() {
+        for (IShowcaseListener listener : mListeners) {
+            listener.onShowcaseTapIntoShape(this);
         }
     }
 
