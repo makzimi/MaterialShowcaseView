@@ -1,6 +1,9 @@
 # MaterialShowcaseView
 A Material Design themed ShowcaseView for Android
 
+This is a fork of deano2390/MaterialShowcaseView labrary with additional click through view feature. This means that you can click on shape target and perform action like you click through showcaseview.
+
+
 This library is heavily inspired by the original [ShowcaseView library][1].
 
 Since Google introduced the Material design philosophy I have seen quite a few apps with a nice clean, flat showcase view (the Youtube app is a good example). The only library out there however is the [original one][1]. This was a great library for a long time but the theming is now looking a bit dated.
