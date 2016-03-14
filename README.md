@@ -1,8 +1,9 @@
 # MaterialShowcaseView
 A Material Design themed ShowcaseView for Android
 
-This is a fork of deano2390/MaterialShowcaseView labrary with additional click through view feature. This means that you can click on shape target and perform action like you click through showcaseview.
+This is a fork of deano2390/MaterialShowcaseView library with additional click through view feature. This means that you can click on shape target and perform action like you click through showcaseview.
 
+----------------------------
 
 This library is heavily inspired by the original [ShowcaseView library][1].
 
