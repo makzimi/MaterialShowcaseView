@@ -196,9 +196,11 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
             mPrefsManager.resetShowcase();
         }
 
+        if(!mWasDismissed) {
+            notifyOnDismissImplicitly();
+        }
 
         notifyOnDismissed();
-
     }
 
     @Override
@@ -274,6 +276,12 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
     private void notifyOnTapIntoShape() {
         for (IShowcaseListener listener : mListeners) {
             listener.onShowcaseTapIntoShape(this);
+        }
+    }
+    
+    private void notifyOnDismissImplicitly() {
+        for (IShowcaseListener listener : mListeners) {
+            listener.onShowcaseDismissImplicitly(this);
         }
     }
 
