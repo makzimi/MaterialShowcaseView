@@ -6,4 +6,5 @@ public interface IShowcaseListener {
     void onShowcaseDismissed(MaterialShowcaseView showcaseView);
     void onShowcaseButtonClick(MaterialShowcaseView showcaseView);
     void onShowcaseTapIntoShape(MaterialShowcaseView showcaseView);
+    void onShowcaseDismissImplicitly(MaterialShowcaseView showcaseView);
 }
